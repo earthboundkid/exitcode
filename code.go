@@ -37,6 +37,9 @@ func Get(err error) int {
 
 // Set wraps an error in a Coder, setting its error code.
 func Set(err error, code int) error {
+	if err == nil {
+		return nil
+	}
 	return coder{err, code}
 }
 
