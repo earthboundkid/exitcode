@@ -3,15 +3,15 @@ package exitcode_test
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"testing"
 
 	"github.com/carlmjohnson/exitcode"
-	"golang.org/x/xerrors"
 )
 
 func TestGet(t *testing.T) {
 	base := exitcode.Set(errors.New(""), 4)
-	wrapped := xerrors.Errorf("wrapping: %w", base)
+	wrapped := fmt.Errorf("wrapping: %w", base)
 
 	testCases := map[string]struct {
 		error
@@ -38,7 +38,7 @@ func TestGet(t *testing.T) {
 
 func TestSet(t *testing.T) {
 	t.Run("same-message", func(t *testing.T) {
-		err := xerrors.New("hello")
+		err := errors.New("hello")
 		coder := exitcode.Set(err, 2)
 		got := err.Error()
 		want := coder.Error()
@@ -47,10 +47,10 @@ func TestSet(t *testing.T) {
 		}
 	})
 	t.Run("keep-chain", func(t *testing.T) {
-		err := xerrors.New("hello")
+		err := errors.New("hello")
 		coder := exitcode.Set(err, 3)
 
-		if !xerrors.Is(coder, err) {
+		if !errors.Is(coder, err) {
 			t.Errorf("broken chain: %v is not %v", coder, err)
 		}
 	})

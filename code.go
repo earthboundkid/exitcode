@@ -1,10 +1,9 @@
 package exitcode
 
 import (
+	"errors"
 	"flag"
 	"os"
-
-	"golang.org/x/xerrors"
 )
 
 // Coder is an interface to control what value Get returns.
@@ -24,11 +23,11 @@ func Get(err error) int {
 		return 0
 	}
 
-	if coder := Coder(nil); xerrors.As(err, &coder) {
+	if coder := Coder(nil); errors.As(err, &coder) {
 		return coder.ExitCode()
 	}
 
-	if xerrors.Is(err, flag.ErrHelp) {
+	if errors.Is(err, flag.ErrHelp) {
 		return 2
 	}
 
