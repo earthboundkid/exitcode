@@ -14,9 +14,8 @@ type Coder interface {
 
 // Get gets the exit code associated with an error. Cases:
 //
-//     nil => 0
+//     nil or flag.ErrHelp => 0
 //     errors implementing Coder => value returned by ExitCode
-//     flag.ErrHelp => 2
 //     all other errors => 1
 func Get(err error) int {
 	if err == nil {
@@ -28,7 +27,7 @@ func Get(err error) int {
 	}
 
 	if errors.Is(err, flag.ErrHelp) {
-		return 2
+		return 0
 	}
 
 	return 1

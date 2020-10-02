@@ -19,7 +19,7 @@ func TestGet(t *testing.T) {
 	}{
 		"nil":     {nil, 0},
 		"default": {errors.New(""), 1},
-		"help":    {flag.ErrHelp, 2},
+		"help":    {flag.ErrHelp, 0},
 		"set":     {exitcode.Set(errors.New(""), 3), 3},
 		"wrapped": {wrapped, 4},
 	}
